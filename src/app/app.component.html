@@ -1,5 +1,6 @@
 <div class="control-section">
   <ejs-treegrid
+    *ngIf="showTree"
     #treegrid
     [dataSource]='data'
     [treeColumnIndex]='1'
@@ -25,6 +26,7 @@
   </ejs-treegrid>
 
   <ejs-dialog
+    *ngIf="showTree"
     #columnDialog
     [buttons]='columnDialogButtons'
     [visible]='hidden'

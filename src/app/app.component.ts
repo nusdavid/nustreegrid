@@ -49,6 +49,8 @@ export class AppComponent implements OnInit {
   public clipboardAction: string = ''
   public deletedIndex: number = -1
 
+  public showTree: boolean = false
+
   ngOnInit(): void {
     this.contextMenuItems =  [
       { text: 'New', target: '.e-headercontent', id: 'add-column' },
@@ -89,6 +91,8 @@ export class AppComponent implements OnInit {
     const res = await axios.get(`${environment.apiUrl}/api/v1/treegrid`)
     this.columns = res.data.columns;
     this.data = res.data.data;
+
+    this.showTree = true
   }
 
   async save() {

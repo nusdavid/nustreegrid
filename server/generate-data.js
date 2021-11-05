@@ -219,7 +219,7 @@ const columns = [
 ]
 
 const generate = () => {
-  const times = 300;
+  const times = 1000;
   const data = [];
 
   for(var i = 0; i < times; i++){
