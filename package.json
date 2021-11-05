@@ -6,7 +6,8 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "express": "nodemon server.js --watch server"
   },
   "private": true,
   "dependencies": {
@@ -18,8 +19,25 @@
     "@angular/platform-browser": "~12.0.3",
     "@angular/platform-browser-dynamic": "~12.0.3",
     "@angular/router": "~12.0.3",
+    "@syncfusion/ej2-angular-buttons": "^19.3.44",
+    "@syncfusion/ej2-angular-calendars": "^19.3.46",
+    "@syncfusion/ej2-angular-dropdowns": "^19.3.48",
+    "@syncfusion/ej2-angular-inputs": "^19.3.48",
+    "@syncfusion/ej2-angular-navigations": "^19.3.46",
+    "@syncfusion/ej2-angular-popups": "^19.3.47",
+    "@syncfusion/ej2-angular-treegrid": "^19.3.48",
+    "axios": "^0.24.0",
+    "cookie-parser": "^1.4.5",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "faker": "^5.5.3",
+    "jade": "^1.11.0",
+    "morgan": "^1.10.0",
+    "ngx-color-picker": "^11.0.0",
+    "nodemon": "^2.0.14",
     "rxjs": "~6.6.0",
     "tslib": "^2.1.0",
+    "uuid": "^8.3.2",
     "zone.js": "~0.11.4"
   },
   "devDependencies": {
