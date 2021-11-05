@@ -110,8 +110,10 @@ export class AppComponent implements OnInit {
 
   async addRow(rowInfo: any) {
     this.treegrid.editSettings.newRowPosition = 'Below'
-    const value = { taskId: Math.floor(Math.random() * (10000000 - 1 + 1) + 1)}
+    const value = { taskId: 0 }
     this.treegrid.addRecord(value, rowInfo.rowIndex, 'Below')
+    await this.sleep(500)
+    this.reindex()
 
     await this.sleep(500)
     await this.save()
@@ -305,6 +307,8 @@ export class AppComponent implements OnInit {
         this.treegrid.refresh();
       });
     }
+    await this.sleep(500)
+    this.reindex()
 
     await this.sleep(500)
     await this.save()
@@ -397,5 +401,12 @@ export class AppComponent implements OnInit {
         resolve();
       }, num);
     });
+  }
+
+  reindex() {
+    this.data = this.data.map((currElement: any, index: number) => ({
+      ...currElement,
+      taskId: index
+    }));
   }
 }
