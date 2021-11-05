@@ -244,8 +244,12 @@ export class AppComponent implements OnInit {
     });
   }
 
-  deleteColumn(index: number) {
+  async deleteColumn(index: number) {
     this.columns.splice(index, 1);
+    this.treegrid.refreshColumns()
+
+    await this.sleep(500)
+    await this.save()
   }
 
   freezeColumn(field: string) {
