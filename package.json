@@ -1,10 +1,14 @@
 {
   "name": "nustreegrid",
   "version": "0.0.0",
+  "engines": {
+    "node": "14.x"
+  },
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
-    "build": "ng build",
+    "start": "nodemon server.js",
+    "serve": "ng serve",
+    "build": "ng build --prod",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "express": "nodemon server.js --watch server"
