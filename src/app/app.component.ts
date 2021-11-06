@@ -1,10 +1,14 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { SortService, ResizeService, PageService, EditService, ContextMenuService, TreeGridComponent, ColumnChooserService, FreezeService, Column, InfiniteScrollService } from '@syncfusion/ej2-angular-treegrid';
 import {  EditSettingsModel, RowPosition } from '@syncfusion/ej2-treegrid';
-import axios from 'axios';
+
 import { DialogComponent, ButtonPropsModel } from '@syncfusion/ej2-angular-popups';
 import { FormControl, FormGroup } from '@angular/forms';
-import { environment } from './../environments/environment';
+
+import { camelize } from 'src/utils/string';
+import { sleep } from 'src/utils/promise';
+
+import { TreegridService } from './treegrid.service';
 
 @Component({
   selector: 'app-root',
@@ -51,6 +55,8 @@ export class AppComponent implements OnInit {
 
   public showTree: boolean = false
 
+  constructor(private treegridService: TreegridService) { }
+
   ngOnInit(): void {
     this.contextMenuItems =  [
       { text: 'New', target: '.e-headercontent', id: 'add-column' },
@@ -75,7 +81,7 @@ export class AppComponent implements OnInit {
     this.getData()
 
     this.columnForm = new FormGroup({
-      headerText: new FormControl(''),
+      columnName: new FormControl(''),
       editType: new FormControl(''),
       defaultValue: new FormControl(''),
       fontColor: new FormControl(''),
@@ -87,35 +93,39 @@ export class AppComponent implements OnInit {
     });
   }
 
-  async getData() {
-    const res = await axios.get(`${environment.apiUrl}/api/v1/treegrid`)
-    this.columns = res.data.columns;
-    this.data = res.data.data;
-
-    this.showTree = true
+  getData() {
+    this.treegridService.get().subscribe(
+      (res: any) => {
+        const mappedColumns = this.mapColumns(res.columns)
+        this.columns = mappedColumns
+        this.data = res.data
+        this.showTree = true
+      }
+    );
   }
 
   async save() {
-    const res = await axios.post(
-      `${environment.apiUrl}/api/v1/treegrid`,
-      {
-        data: this.data,
-        columns: this.columns
+    this.treegridService.save({
+      data: this.data,
+      columns: this.columns
+    }).subscribe(
+      (res: any) => {
+        const mappedColumns = this.mapColumns(res.columns)
+        this.columns = mappedColumns
+        this.data = res.data
+        this.showTree = true
       }
-    )
-
-    this.columns = res.data.columns
-    this.data = res.data.data
+    );
   }
 
   async addRow(rowInfo: any) {
     this.treegrid.editSettings.newRowPosition = 'Below'
     const value = { taskId: 0 }
     this.treegrid.addRecord(value, rowInfo.rowIndex, 'Below')
-    await this.sleep(500)
+    await sleep(500)
     this.reindex()
 
-    await this.sleep(500)
+    await sleep(500)
     await this.save()
   }
 
@@ -124,7 +134,7 @@ export class AppComponent implements OnInit {
     const value = { taskId:  Math.floor(Math.random() * (10000000 - 1 + 1) + 1) }
     this.treegrid.addRecord(value, rowInfo.rowIndex, 'Child')
 
-    await this.sleep(500)
+    await sleep(500)
     await this.save()
   }
 
@@ -132,7 +142,7 @@ export class AppComponent implements OnInit {
     this.data.splice(index, 1)
     this.treegrid.refresh()
 
-    await this.sleep(500)
+    await sleep(500)
     await this.save()
   }
 
@@ -160,7 +170,7 @@ export class AppComponent implements OnInit {
     this.selectedEditColumn = this.columns[index]
 
     this.columnForm.setValue({
-      headerText: this.selectedEditColumn.headerText || '',
+      columnName: this.selectedEditColumn.columnName || '',
       editType: this.selectedEditColumn.editType || '',
       defaultValue: this.selectedEditColumn.defaultValue || '',
       fontColor: this.selectedEditColumn.fontColor || '',
@@ -192,7 +202,7 @@ export class AppComponent implements OnInit {
     this.updateData(this.data, column.field, column.defaultValue, column.editType)
     this.treegrid.refresh();
 
-    await this.sleep(500)
+    await sleep(500)
     await this.save()
   }
 
@@ -201,36 +211,14 @@ export class AppComponent implements OnInit {
     this.treegrid.columns.splice(this.currentEditingColumnIndex, 1, new Column(column))
     this.treegrid.refreshColumns()
 
-    await this.sleep(500)
+    await sleep(500)
     await this.save()
   }
 
   handleFormatColumn() {
     const column = this.columnForm.value
-    column.field = this.camelize(column.headerText)
+    column.field = camelize(column.columnName)
     column.width = 120
-
-    if (column.fontColor || column.fontSize || column.backgroundColor || column.textWrap) {
-      const style: any = {}
-      if (column.fontSize) {
-        style['fontSize'] = column.fontSize
-        delete column.fontSize
-      }
-      if (column.fontColor) {
-        style['color'] = column.fontColor
-        delete column.fontColor
-      }
-      if (column.backgroundColor) {
-        style['backgroundColor'] = column.backgroundColor
-        delete column.backgroundColor
-      }
-      if (column.textWrap) {
-        style['wordBreak'] = column.textWrap
-        delete column.wordWrap
-      }
-
-      column.customAttributes = { style }
-    }
 
     return column
   }
@@ -248,7 +236,7 @@ export class AppComponent implements OnInit {
     this.columns.splice(index, 1);
     this.treegrid.refreshColumns()
 
-    await this.sleep(500)
+    await sleep(500)
     await this.save()
   }
 
@@ -281,7 +269,7 @@ export class AppComponent implements OnInit {
       this.copyingRows.forEach(async (element: object) => {
         const newData = JSON.parse(JSON.stringify(element))
         const obj = { ...newData['taskData'] };
-        await this.sleep(100);
+        await sleep(100);
 
         this.treegrid.addRecord(obj, rowIndex, position)
       });
@@ -297,28 +285,28 @@ export class AppComponent implements OnInit {
         objArray.push(newData.taskData);
         await this.deleteObjectRecord(element)
       })).then(async () => {
-        await this.sleep(100);
+        await sleep(100);
         objArray.forEach(async (obj1: object) => {
           let data = JSON.parse(JSON.stringify(obj1))
-          await this.sleep(1)
+          await sleep(1)
           const ind = position === 'Below' ? rowIndex - this.copyingRows.length : rowIndex - this.copyingRows.length
 
-          this.treegrid.addRecord(data, ind, position)
+          this.treegrid.addRecord(data, rowIndex, position)
         });
       });
 
-      this.sleep(500).then(() => {
+      sleep(500).then(() => {
         this.treegrid.refresh();
       });
     }
-    await this.sleep(500)
+    await sleep(500)
     this.reindex()
 
-    await this.sleep(500)
+    await sleep(500)
     await this.save()
   }
 
-  public deleteObjectRecord(element: any, deleteRow: boolean = true) {
+  deleteObjectRecord(element: any, deleteRow: boolean = true) {
     return new Promise<void>(async (resolve, reject) => {
       if (element.hasOwnProperty('subtasks')) {
         element.subtasks.forEach(async (element1: any) => {
@@ -333,11 +321,9 @@ export class AppComponent implements OnInit {
 
       if (deleteRow == true) {
         if (element['index'] < this.deletedIndex) {
-          // console.log("main");
           this.deletedIndex--;
-          // console.log(this.deletedIndex);
         }
-        await this.sleep(1);
+        await sleep(1);
 
         this.treegrid.deleteRecord('taskId', element);
       }
@@ -385,12 +371,6 @@ export class AppComponent implements OnInit {
     }
   }
 
-  camelize(str: string) {
-    return str.replace(/(?:^\w|[A-Z]|\b\w)/g, function(word, index) {
-      return index === 0 ? word.toLowerCase() : word.toUpperCase();
-    }).replace(/\s+/g, '');
-  }
-
   highlightSelectedRows(selectedItems: any) {
     for (let i in selectedItems) {
       this.treegrid.getRowByIndex(selectedItems[i]).querySelectorAll('td').forEach((element) => {
@@ -399,18 +379,25 @@ export class AppComponent implements OnInit {
     }
   }
 
-  sleep(num: number) {
-    return new Promise<void>((resolve, reject) => {
-      setTimeout(() => {
-        resolve();
-      }, num);
-    });
-  }
-
   reindex() {
     this.data = this.data.map((currElement: any, index: number) => ({
       ...currElement,
       taskId: index
     }));
+  }
+
+  mapColumns(columns: any[]) {
+    return columns.map((column: any) => ({
+      ...column,
+      headerText: column.columnName,
+      customAttributes: {
+        style: {
+          color: column.fontColor,
+          fontSize: column.fontSize && column.fontSize + 'px',
+          backgroundColor: column.backgroundColor,
+          wordWrap: column.textWrap
+        }
+      }
+    }))
   }
 }

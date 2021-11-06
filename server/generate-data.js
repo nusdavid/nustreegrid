@@ -22,12 +22,12 @@ const columns = [
     "freeze": "Left",
     "uid": "grid-column7",
     "foreignKeyField": "taskId",
-    "width": 200,
+    "width": 100,
     "visible": true,
     "freezeTable": "frozen-left",
     "index": 0,
     "type": "number",
-    "headerText": "ID"
+    "columnName": "ID"
   },
   {
     "disableHtmlEncode": true,
@@ -45,9 +45,9 @@ const columns = [
     "sortDirection": "Descending",
     "editType": "stringedit",
     "defaultValue": 'Hello',
-    "fontColor": "",
-    "backgroundColor": "",
-    "textAlign": "Center",
+    "fontColor": "#000000",
+    "backgroundColor": "#e7ffb0",
+    "textAlign": "Left",
     "textWrap": "",
     "fontSize": "",
     "field": "name",
@@ -58,8 +58,7 @@ const columns = [
     "freezeTable": "movable",
     "index": 1,
     "type": "string",
-    "headerText": "Name",
-    "customAttributes": {style: {color: "#000000", backgroundColor: '#e7ffb0'}}
+    "columnName": "Name"
   },
   {
     "disableHtmlEncode": true,
@@ -90,7 +89,7 @@ const columns = [
     "freezeTable": "movable",
     "index": 2,
     "type": "string",
-    "headerText": "Email"
+    "columnName": "Email"
   },
   {
     "disableHtmlEncode": true,
@@ -121,7 +120,7 @@ const columns = [
     "freezeTable": "movable",
     "index": 3,
     "type": "number",
-    "headerText": "Age"
+    "columnName": "Age"
   },
   {
     "disableHtmlEncode": true,
@@ -152,7 +151,7 @@ const columns = [
     "freezeTable": "movable",
     "index": 4,
     "type": "string",
-    "headerText": "BirthDay"
+    "columnName": "BirthDay"
   },
   {
     "disableHtmlEncode": true,
@@ -183,7 +182,7 @@ const columns = [
     "freezeTable": "movable",
     "index": 5,
     "type": "string",
-    "headerText": "Male?"
+    "columnName": "Male?"
   },
   {
     "disableHtmlEncode": true,
@@ -214,7 +213,7 @@ const columns = [
     "freezeTable": "movable",
     "index": 6,
     "type": "string",
-    "headerText": "Car"
+    "columnName": "Car"
   }
 ]
 

@@ -12,6 +12,9 @@ import { TreeGridAllModule } from '@syncfusion/ej2-angular-treegrid';
 import { ColorPickerModule } from 'ngx-color-picker';
 
 import { AppComponent } from './app.component';
+import { TreegridService } from './treegrid.service';
+
+import { HttpClientModule } from "@angular/common/http";
 
 @NgModule({
   declarations: [
@@ -32,9 +35,12 @@ import { AppComponent } from './app.component';
     FormsModule,
     DatePickerModule,
     BrowserModule,
-    ColorPickerModule
+    ColorPickerModule,
+    HttpClientModule
   ],
-  providers: [],
+  providers: [
+    TreegridService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

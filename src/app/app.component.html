@@ -1,7 +1,8 @@
-<div class="control-section">
+<div class="control-section" style="height: 98vh;">
   <ejs-treegrid
     *ngIf="showTree"
     #treegrid
+    isResponsive='true'
     [dataSource]='data'
     [treeColumnIndex]='1'
     allowSorting='true'
@@ -10,7 +11,7 @@
     [editSettings]='editing'
     [toolbar]="toolbar"
     (contextMenuClick)="contextMenuClick($event)"
-    height='680'
+    height='100%'
     allowReordering='true'
     allowResizing='true'
     [showColumnChooser]='true'
@@ -45,7 +46,7 @@
               </tr>
               <tr>
                 <td>
-                  <input id="headerText" type="text" formControlName="headerText" />
+                  <input id="columnName" type="text" formControlName="columnName" />
                 </td>
               </tr>
               <tr>

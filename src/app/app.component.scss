@@ -6,3 +6,7 @@
   display: inline-block;
   padding-right: 10px;
 }
+
+::ng-deep .e-columnheader {
+  height: 40px !important;
+}
