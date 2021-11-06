@@ -389,6 +389,7 @@ export class AppComponent implements OnInit {
   mapColumns(columns: any[]) {
     return columns.map((column: any) => ({
       ...column,
+      index: undefined,
       headerText: column.columnName,
       customAttributes: {
         style: {
