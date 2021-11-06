@@ -233,7 +233,7 @@ export class AppComponent implements OnInit {
   }
 
   async deleteColumn(index: number) {
-    this.columns.splice(index, 1);
+    this.treegrid.columns.splice(index, 1);
     this.treegrid.refreshColumns()
 
     await sleep(500)

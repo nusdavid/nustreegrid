@@ -25,7 +25,7 @@ const columns = [
     "width": 100,
     "visible": true,
     "freezeTable": "frozen-left",
-    "index": 0,
+
     "type": "number",
     "columnName": "ID"
   },
@@ -56,7 +56,7 @@ const columns = [
     "width": 200,
     "visible": true,
     "freezeTable": "movable",
-    "index": 1,
+
     "type": "string",
     "columnName": "Name"
   },
@@ -87,7 +87,7 @@ const columns = [
     "width": 200,
     "visible": true,
     "freezeTable": "movable",
-    "index": 2,
+
     "type": "string",
     "columnName": "Email"
   },
@@ -118,7 +118,7 @@ const columns = [
     "width": 200,
     "visible": true,
     "freezeTable": "movable",
-    "index": 3,
+
     "type": "number",
     "columnName": "Age"
   },
@@ -149,7 +149,7 @@ const columns = [
     "width": 200,
     "visible": true,
     "freezeTable": "movable",
-    "index": 4,
+
     "type": "string",
     "columnName": "BirthDay"
   },
@@ -180,7 +180,7 @@ const columns = [
     "width": 200,
     "visible": true,
     "freezeTable": "movable",
-    "index": 5,
+
     "type": "string",
     "columnName": "Male?"
   },
@@ -211,7 +211,7 @@ const columns = [
     "width": 200,
     "visible": true,
     "freezeTable": "movable",
-    "index": 6,
+
     "type": "string",
     "columnName": "Car"
   }
