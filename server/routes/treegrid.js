@@ -12,10 +12,11 @@ router.get('/', function(req, res, next) {
 router.post('/', function(req, res, next) {
   const json = JSON.stringify(req.body)
   const jsonPath = path.join(__dirname, '../data.json')
-  fs.writeFile(jsonPath, json, 'utf8', () => {
-    console.log('DONE');
-  });
-  res.status(200).json(JSON.parse(json))
+
+  fs.promises.writeFile(jsonPath, json, 'utf8')
+    .then(() => {
+      res.status(200).json(JSON.parse(json))
+    })
 });
 
 module.exports = router;
